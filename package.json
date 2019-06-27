@@ -1,5 +1,5 @@
 {
-  "name": "node-circle-gke",
+  "name": "circle-ci-test",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
