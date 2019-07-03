@@ -79,7 +79,7 @@ jobs:
       - run:
           name: Run ansible playbook
           command: |
-            gcloud --quiet compute ssh ankur-test-ansible-master --command='ansible-playbook /etc/ansible/test.yml --extra-vars "target_nodes=sandbox_test"'
+            gcloud --quiet compute ssh ankur-test-ansible-master --command='ansible-playbook /etc/ansible/test.yml --extra-vars "target_nodes=sandbox_test"' --ssh-key-file=${HOME}/gcloud-service-key.json
 workflows:
   version: 2
   build_test_deploy:
