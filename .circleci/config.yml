@@ -74,10 +74,10 @@ jobs:
             echo $GCLOUD_SERVICE_KEY_COMPUTE > ${HOME}/gcloud-service-key.json
             # PUBLIC_IP=$(gcloud compute instances describe ankur-test-ansible-master --project ${GOOGLE_PROJECT_ID} --zone ${GOOGLE_COMPUTE_ZONE} | grep natIP | awk -F : '{ print $2 }') 
             # export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-            apt-get install python python-pip -y
-            pip install --upgrade google-api-python-client
-            pip install requests
-            curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py
+            #apt-get install python python-pip -y
+            #pip install --upgrade google-api-python-client
+            #pip install requests
+            #curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             PUBLIC_IP=$(gcloud compute instances describe ankur-test-ansible-master --project ${GOOGLE_PROJECT_ID} --zone ${GOOGLE_COMPUTE_ZONE} | grep natIP | awk -F : '{ print $2 }')
             #gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
@@ -87,11 +87,12 @@ jobs:
           name: Run ansible playbook
           command: |
             echo ${PUBLIC_IP}
-            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
-            python service_account_ssh.py \
-            --cmd 'sudo yum install cowsay -y && cowsay "It works!"' \
-            --account ansible-circleci@maropost1984.iam.gserviceaccount.com \
-            --project maropost1984 --hostname "35.184.192.202"
+            gcloud compute ssh ansible-circleci@ankur-test-ansible-master --ssh-key-file="${HOME}/gcloud-service-key.json --command="touch /tmp/test_circle_ci" --strict-host-key-checking=no
+            #export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
+            #python service_account_ssh.py \
+            #--cmd 'sudo yum install cowsay -y && cowsay "It works!"' \
+            #--account ansible-circleci@maropost1984.iam.gserviceaccount.com \
+            #--project maropost1984 --hostname "35.184.192.202"
             #gcloud --quiet compute ssh  circle-ci-ansible-test@ankur-test-ansible-master --command='ansible-playbook /etc/ansible/test.yml --extra-vars "target_nodes=sandbox_test"' #--ssh-key-file=${HOME}/gcloud-service-key.json
 workflows:
   version: 2
