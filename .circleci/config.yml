@@ -72,14 +72,24 @@ jobs:
           command: |
             apt-get install -qq -y gettext
             echo $GCLOUD_SERVICE_KEY_COMPUTE > ${HOME}/gcloud-service-key.json
-            gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
-            gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
-            gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
+            PUBLIC_IP=$(gcloud compute instances describe ankur-test-ansible-master --project ${GOOGLE_PROJECT_ID} --zone ${GOOGLE_COMPUTE_ZONE} | grep natIP | awk -F : '{ print $2 }') 
+            echo $GCLOUD_SERVICE_KEY > ${HOME}/gcloud-service-ssh-key.json
+            export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-ssh-key.json"
+            apt-get install python python-pip -y
+            pip install --upgrade google-api-python-client
+            curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py
+            #gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
+            #gcloud --quiet config set project ${GOOGLE_PROJECT_ID}
+            #gcloud --quiet config set compute/zone ${GOOGLE_COMPUTE_ZONE}
       - setup_remote_docker
       - run:
           name: Run ansible playbook
           command: |
-            gcloud --quiet compute ssh  circle-ci-ansible-test@ankur-test-ansible-master --command='ansible-playbook /etc/ansible/test.yml --extra-vars "target_nodes=sandbox_test"' #--ssh-key-file=${HOME}/gcloud-service-key.json
+            python service_account_ssh.py \
+            --cmd 'ansible-playbook /etc/ansible/playbooks/test.yml --extra-vars "target_nodes=sandbox_test"' \
+            --account circle-ci-ansible-test@maropost1984.iam.gserviceaccount.com \
+            --project maropost1984 --hostname ${PUBLIC_IP}
+            #gcloud --quiet compute ssh  circle-ci-ansible-test@ankur-test-ansible-master --command='ansible-playbook /etc/ansible/test.yml --extra-vars "target_nodes=sandbox_test"' #--ssh-key-file=${HOME}/gcloud-service-key.json
 workflows:
   version: 2
   build_test_deploy:
