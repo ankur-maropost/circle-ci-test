@@ -87,7 +87,7 @@ jobs:
           name: Run ansible playbook
           command: |
             echo ${PUBLIC_IP}
-            gcloud compute ssh ansible-circleci@ankur-test-ansible-master --ssh-key-file="${HOME}/gcloud-service-key.json --command="touch /tmp/test_circle_ci" --strict-host-key-checking=no
+            gcloud compute ssh ansible-circleci@ankur-test-ansible-master --ssh-key-file="${HOME}/gcloud-service-key.json" --command="touch /tmp/test_circle_ci" --strict-host-key-checking=no
             #export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             #python service_account_ssh.py \
             #--cmd 'sudo yum install cowsay -y && cowsay "It works!"' \
