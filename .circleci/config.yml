@@ -72,7 +72,7 @@ jobs:
           command: |
             apt-get install -qq -y gettext
             echo $GCLOUD_SERVICE_KEY_COMPUTE > ${HOME}/gcloud-service-key.json
-           # PUBLIC_IP=$(gcloud compute instances describe ankur-test-ansible-master --project ${GOOGLE_PROJECT_ID} --zone ${GOOGLE_COMPUTE_ZONE} | grep natIP | awk -F : '{ print $2 }') 
+            # PUBLIC_IP=$(gcloud compute instances describe ankur-test-ansible-master --project ${GOOGLE_PROJECT_ID} --zone ${GOOGLE_COMPUTE_ZONE} | grep natIP | awk -F : '{ print $2 }') 
             GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             apt-get install python python-pip -y
             pip install --upgrade google-api-python-client
