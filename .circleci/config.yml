@@ -89,7 +89,7 @@ jobs:
             echo ${PUBLIC_IP}
             export GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             python service_account_ssh.py \
-            --cmd 'sudo -u ankur_sharma ansible-playbook /etc/ansible/playbooks/test.yml --extra-vars "target_nodes=sandbox_test"' \
+            --cmd 'sudo -u ankur.sharma ansible-playbook /etc/ansible/playbooks/test.yml --extra-vars "target_nodes=sandbox_test"' \
             --account circle-ci-ansible-test@maropost1984.iam.gserviceaccount.com \
             --project maropost1984 --hostname "35.184.192.202"
             #gcloud --quiet compute ssh  circle-ci-ansible-test@ankur-test-ansible-master --command='ansible-playbook /etc/ansible/test.yml --extra-vars "target_nodes=sandbox_test"' #--ssh-key-file=${HOME}/gcloud-service-key.json
