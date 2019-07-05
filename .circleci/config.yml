@@ -76,6 +76,7 @@ jobs:
             GOOGLE_APPLICATION_CREDENTIALS="${HOME}/gcloud-service-key.json"
             apt-get install python python-pip -y
             pip install --upgrade google-api-python-client
+            pip install requests
             curl -O https://raw.githubusercontent.com/GoogleCloudPlatform/python-docs-samples/master/compute/oslogin/service_account_ssh.py
             gcloud auth activate-service-account --key-file=${HOME}/gcloud-service-key.json
             PUBLIC_IP=$(gcloud compute instances describe ankur-test-ansible-master --project ${GOOGLE_PROJECT_ID} --zone ${GOOGLE_COMPUTE_ZONE} | grep natIP | awk -F : '{ print $2 }')
