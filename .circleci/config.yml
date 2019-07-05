@@ -86,6 +86,7 @@ jobs:
       - run:
           name: Run ansible playbook
           command: |
+            echo ${PUBLIC_IP}
             python service_account_ssh.py \
             --cmd 'ansible-playbook /etc/ansible/playbooks/test.yml --extra-vars "target_nodes=sandbox_test"' \
             --account circle-ci-ansible-test@maropost1984.iam.gserviceaccount.com \
